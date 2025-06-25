@@ -1,0 +1,80 @@
+
+databaseChangeLog:
+  - changeSet:
+      id: 1.0.4
+      author: library-system
+      changes:
+        - insert:
+            tableName: library_user
+            columns:
+              - column:
+                  name: name
+                  value: "Harry Potter"
+        - insert:
+            tableName: library_user
+            columns:
+              - column:
+                  name: name
+                  value: "Hermione Granger"
+        - insert:
+            tableName: library_user
+            columns:
+              - column:
+                  name: name
+                  value: "Ron Weasley"
+        - insert:
+            tableName: library_user
+            columns:
+              - column:
+                  name: name
+                  value: "Luna Lovegood"
+
+  - changeSet:
+      id: 1.0.5
+      author: library-system
+      changes:
+        - insert:
+            tableName: book
+            columns:
+              - column:
+                  name: title
+                  value: "Fantastic Beasts and Where to Find Them"
+              - column:
+                  name: author
+                  value: "Newt Scamander"
+        - insert:
+            tableName: book
+            columns:
+              - column:
+                  name: title
+                  value: "Quidditch Through the Ages"
+              - column:
+                  name: author
+                  value: "Kennilworthy Whisp"
+        - insert:
+            tableName: book
+            columns:
+              - column:
+                  name: title
+                  value: "Advanced Potion Making"
+              - column:
+                  name: author
+                  value: "Libatius Borage"
+        - insert:
+            tableName: book
+            columns:
+              - column:
+                  name: title
+                  value: "Hogwarts: A History"
+              - column:
+                  name: author
+                  value: "Bathilda Bagshot"
+        - insert:
+            tableName: book
+            columns:
+              - column:
+                  name: title
+                  value: "The Standard Book of Spells, Grade 6"
+              - column:
+                  name: author
+                  value: "Miranda Goshawk"

@@ -1,0 +1,101 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1.0.0
+      author: library-system
+      changes:
+        - createTable:
+            tableName: library_user
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 1.0.1
+      author: library-system
+      changes:
+        - createTable:
+            tableName: book
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: title
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: author
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: available
+                  type: boolean
+                  defaultValueBoolean: true
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 1.0.2
+      author: library-system
+      changes:
+        - createTable:
+            tableName: borrow_record
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: book_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_borrow_record_book
+                    references: book(id)
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_borrow_record_user
+                    references: library_user(id)
+              - column:
+                  name: borrowed_at
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: returned_at
+                  type: datetime
+
+  - changeSet:
+      id: 1.0.3
+      author: library-system
+      changes:
+        - createIndex:
+            indexName: idx_borrow_record_user_returned
+            tableName: borrow_record
+            columns:
+              - column:
+                  name: user_id
+              - column:
+                  name: returned_at
