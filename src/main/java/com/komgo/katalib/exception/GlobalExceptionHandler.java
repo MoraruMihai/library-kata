@@ -12,31 +12,26 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // Handle UserNotFoundException
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleUserNotFound(UserNotFoundException ex) {
         return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
-    // Handle BookNotFoundException
     @ExceptionHandler(BookNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleBookNotFound(BookNotFoundException ex) {
         return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
-    // Handle BookNotAvailableException
     @ExceptionHandler(BookNotAvailableException.class)
     public ResponseEntity<Map<String, Object>> handleBookNotAvailable(BookNotAvailableException ex) {
         return buildResponse(HttpStatus.CONFLICT, ex.getMessage());
     }
 
-    // Handle NoActiveBorrowRecordException
     @ExceptionHandler(NoActiveBorrowRecordException.class)
     public ResponseEntity<Map<String, Object>> handleNoActiveBorrowRecord(NoActiveBorrowRecordException ex) {
         return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
-    // Generic method to build JSON response
     private ResponseEntity<Map<String, Object>> buildResponse(HttpStatus status, String message) {
         Map<String, Object> response = new HashMap<>();
         response.put("timestamp", LocalDateTime.now());
