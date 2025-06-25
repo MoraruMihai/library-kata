@@ -1,7 +1,7 @@
 # Library Management System
 
 ## Description
-**Library Kata** is a **RESTful API** designed to efficiently manage library operations. It provides endpoints for tasks such as managing books, users, and borrowing records. 
+**Library Kata** is a **RESTful API** designed to efficiently manage library operations. It provides endpoints for tasks such as adding books, borrowing an returning books and viewing the list of borrowed books of an user. 
 
 ---
 

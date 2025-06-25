@@ -1,7 +1,7 @@
 package com.komgo.katalib.controller;
 
-import com.komgo.katalib.entity.Book;
-import com.komgo.katalib.entity.BorrowRecord;
+import com.komgo.katalib.dto.BookDTO;
+import com.komgo.katalib.dto.BorrowRecordDTO;
 import com.komgo.katalib.service.LibraryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,12 +16,12 @@ public class LibraryController {
     private final LibraryService libraryService;
 
     @PostMapping("/books")
-    public ResponseEntity<Book> addBook(@RequestBody Book book) {
+    public ResponseEntity<BookDTO> addBook(@RequestBody BookDTO book) {
         return ResponseEntity.ok(libraryService.addBook(book));
     }
 
     @PostMapping("/borrow/{userId}/{bookId}")
-    public ResponseEntity<BorrowRecord> borrowBook(
+    public ResponseEntity<BorrowRecordDTO> borrowBook(
             @PathVariable Long userId,
             @PathVariable Long bookId) {
         return ResponseEntity.ok(libraryService.borrowBook(userId, bookId));
@@ -36,7 +36,7 @@ public class LibraryController {
     }
 
     @GetMapping("/borrowed/{userId}")
-    public ResponseEntity<List<Book>> getBorrowedBooks(@PathVariable Long userId) {
+    public ResponseEntity<List<BookDTO>> getBorrowedBooks(@PathVariable Long userId) {
         return ResponseEntity.ok(libraryService.getBorrowedBooks(userId));
     }
 }

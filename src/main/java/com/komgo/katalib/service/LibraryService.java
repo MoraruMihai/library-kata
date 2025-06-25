@@ -1,5 +1,7 @@
 package com.komgo.katalib.service;
 
+import com.komgo.katalib.dto.BookDTO;
+import com.komgo.katalib.dto.BorrowRecordDTO;
 import com.komgo.katalib.entity.Book;
 import com.komgo.katalib.entity.BorrowRecord;
 import com.komgo.katalib.entity.User;
@@ -7,6 +9,8 @@ import com.komgo.katalib.exception.BookNotAvailableException;
 import com.komgo.katalib.exception.BookNotFoundException;
 import com.komgo.katalib.exception.NoActiveBorrowRecordException;
 import com.komgo.katalib.exception.UserNotFoundException;
+import com.komgo.katalib.mapper.BookMapper;
+import com.komgo.katalib.mapper.BorrowRecordMapper;
 import com.komgo.katalib.repository.BookRepository;
 import com.komgo.katalib.repository.BorrowRecordRepository;
 import com.komgo.katalib.repository.UserRepository;
@@ -16,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,13 +28,16 @@ public class LibraryService {
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
     private final BorrowRecordRepository borrowRecordRepository;
+    private final BookMapper bookMapper;
+    private final BorrowRecordMapper borrowRecordMapper;
 
-    public Book addBook(Book book) {
-        return bookRepository.save(book);
+    public BookDTO addBook(BookDTO book) {
+        Book newBook = bookMapper.toEntity(book);
+        return bookMapper.toDto(bookRepository.save(newBook));
     }
 
     @Transactional
-    public BorrowRecord borrowBook(Long userId, Long bookId) {
+    public BorrowRecordDTO borrowBook(Long userId, Long bookId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
         Book book = bookRepository.findById(bookId)
@@ -46,7 +54,7 @@ public class LibraryService {
         borrowRecord.setBook(book);
         borrowRecord.setUser(user);
 
-        return borrowRecordRepository.save(borrowRecord);
+        return borrowRecordMapper.toDto(borrowRecordRepository.save(borrowRecord));
     }
 
     @Transactional
@@ -68,12 +76,18 @@ public class LibraryService {
         bookRepository.save(book);
     }
 
-    public List<Book> getBorrowedBooks(Long userId) {
+    public List<BookDTO> getBorrowedBooks(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
 
         return borrowRecordRepository.findByUserAndReturnedAtIsNull(user).stream()
                 .map(BorrowRecord::getBook)
-                .toList();
+                .map(bookMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<BorrowRecordDTO> getAllBorrowRecords() {
+        List<BorrowRecord> records = borrowRecordRepository.findAll();
+        return records.stream().map(borrowRecordMapper::toDto).collect(Collectors.toList());
     }
 }
